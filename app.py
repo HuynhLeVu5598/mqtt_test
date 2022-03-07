@@ -16,8 +16,10 @@ app.config["MQTT_BROKER_PORT"] = 1883
 # app.config['MQTT_USERNAME'] = 'Your Username'
 # app.config['MQTT_PASSWORD'] = 'Your Password'
 app.config["MQTT_REFRESH_TIME"] = 1.0  # refresh time in seconds
-mqtt = Mqtt(app)
-
+try:
+    mqtt = Mqtt(app)
+except:
+    print('timeout')
 ph, nd, oxy = None, None, None
 
 
@@ -78,7 +80,7 @@ def chart_data_ND():
             json_data = json.dumps(
                 {
                     "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "value": int(nd),
+                    "value": nd,
                 }
             )
             yield f"data:{json_data}\n\n"
@@ -97,7 +99,7 @@ def chart_data_PH():
             json_data = json.dumps(
                 {
                     # "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "value": int(ph),
+                    "value": ph,
                 }
             )
             yield f"data:{json_data}\n\n"
@@ -116,7 +118,7 @@ def chart_data_OXY():
             json_data = json.dumps(
                 {
                     # "time": datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
-                    "value": int(oxy),
+                    "value": oxy,
                 }
             )
             yield f"data:{json_data}\n\n"
@@ -134,8 +136,9 @@ def stuff():
 
 if __name__ == "__main__":
     try:
-        #app.run(debug=True, threaded=True)
-        app.run(debug=True)
+        app.run(debug=True, threaded=True)
+        #app.run(debug=True)
+        #socketio.run(app, host='0.0.0.0', port=5000, use_reloader=False, debug=False)
     except:
         print("Don't connecting")
 
