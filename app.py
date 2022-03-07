@@ -5,10 +5,10 @@ from datetime import datetime
 from flask import Flask, Response, jsonify, render_template, request
 from flask_mqtt import Mqtt
 from datetime import datetime
-from flask_ngrok import run_with_ngrok
+#from flask_ngrok import run_with_ngrok
 
 app = Flask(__name__)
-run_with_ngrok(app)
+#run_with_ngrok(app)
 random.seed()
 
 app.config["MQTT_BROKER_URL"] = "broker.emqx.io"
@@ -41,11 +41,11 @@ def handle_mqtt_message(client, userdata, message):
     global ph, nd, oxy
     data = dict(topic=message.topic, payload=message.payload.decode())
     print(data)
-    if message.topic == "tlqb/ND":
+    if message.topic == "iot/ND":
         nd = message.payload.decode()
-    if message.topic == "tlqb/PH":
+    if message.topic == "iot/PH":
         ph = message.payload.decode()
-    if message.topic == "tlqb/OXY":
+    if message.topic == "iot/OXY":
         oxy = message.payload.decode()
     print(nd, ph, oxy, "****************************** \n")
 
@@ -133,5 +133,9 @@ def stuff():
 
 
 if __name__ == "__main__":
+    try:
+        #app.run(debug=True, threaded=True)
+        app.run(debug=True)
+    except:
+        print("Don't connecting")
 
-    app.run(debug=True, threaded=True)
