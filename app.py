@@ -16,10 +16,19 @@ app.config["MQTT_BROKER_PORT"] = 1883
 # app.config['MQTT_USERNAME'] = 'Your Username'
 # app.config['MQTT_PASSWORD'] = 'Your Password'
 app.config["MQTT_REFRESH_TIME"] = 1.0  # refresh time in seconds
-try:
-    mqtt = Mqtt(app)
-except:
-    print('timeout')
+a = False
+def check():
+    global a
+    global mqtt
+    try:
+        mqtt = Mqtt(app)
+        a = True
+        print('ok')
+    except:
+        print('timeout')
+while a == False:
+    check()
+
 ph, nd, oxy = None, None, None
 
 
